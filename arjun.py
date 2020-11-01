@@ -4,11 +4,11 @@ from __future__ import print_function
 
 from core.colors import green, white, end, info, bad, good, run
 
-print('''%s    _
-   /_| _ '
-  (  |/ /(//) v1.6
-      _/      %s
-''' % (green, end))
+# print('''%s    _
+#    /_| _ '
+#   (  |/ /(//) v1.6
+#       _/      %s
+# ''' % (green, end))
 
 try:
     import concurrent.futures
@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser() # defines the parser
 parser.add_argument('-u', help='target url', dest='url')
 parser.add_argument('-o', help='path for the output file', dest='output_file')
 parser.add_argument('-d', help='request delay', dest='delay', type=float, default=0)
-parser.add_argument('-t', help='number of threads', dest='threads', type=int, default=2)
+parser.add_argument('-t', help='number of threads', dest='threads', type=int, default=10)
 parser.add_argument('-f', help='wordlist path', dest='wordlist', default='./db/params.txt')
 parser.add_argument('--urls', help='file containing target urls', dest='url_file')
 parser.add_argument('--get', help='use get method', dest='GET', action='store_true')
@@ -40,6 +40,8 @@ parser.add_argument('--headers', help='add headers', dest='headers', nargs='?', 
 parser.add_argument('--json', help='treat post data as json', dest='jsonData', action='store_true')
 parser.add_argument('--stable', help='prefer stability over speed', dest='stable', action='store_true')
 parser.add_argument('--include', help='include this data in every request', dest='include', default={})
+parser.add_argument('--silent', help='display parameters only', dest='silent', action="store_true", default=False)
+
 args = parser.parse_args() # arguments to be parsed
 
 url = args.url
@@ -51,9 +53,14 @@ jsonData = args.jsonData
 url_file = args.url_file
 wordlist = args.wordlist
 threadCount = args.threads
+silent = args.silent
 
 if stable or delay:
     threadCount = 1
+
+if silent:
+    print_orig = print
+    print = lambda *x,**kw:None
 
 core.config.globalVariables = vars(args)
 
@@ -100,8 +107,12 @@ if url_file:
         quit()
 
 if not url and not url_file:
-    print('%s No URL specified.' % bad)
-    quit()
+    # print('%s No URL specified.' % bad)
+    # quit()
+    url = input()
+
+if '?' in url:
+    url = url[:url.find('?')]
 
 def heuristic(response, paramList):
     done = []
@@ -258,3 +269,7 @@ if args.output_file and finalResult:
     print('%s Saving output to JSON file in %s' % (info, args.output_file))
     with open(str(args.output_file), 'w+', encoding="utf8") as json_output:
         json.dump(finalResult, json_output, sort_keys=True, indent=4)
+
+for url, params in finalResult.items():
+    for param in params:
+        print_orig(f"{url}?{param}={randomString(2)}", end='\n')
