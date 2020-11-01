@@ -59,8 +59,8 @@ silent = args.silent
 if stable or delay:
     threadCount = 1
 
+print_orig = print
 if silent:
-    print_orig = print
     print = lambda *x,**kw:None
 
 core.config.globalVariables = vars(args)
