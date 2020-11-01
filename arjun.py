@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 from core.colors import green, white, end, info, bad, good, run
+import os
 
 # print('''%s    _
 #    /_| _ '
@@ -32,7 +33,7 @@ parser.add_argument('-u', help='target url', dest='url')
 parser.add_argument('-o', help='path for the output file', dest='output_file')
 parser.add_argument('-d', help='request delay', dest='delay', type=float, default=0)
 parser.add_argument('-t', help='number of threads', dest='threads', type=int, default=10)
-parser.add_argument('-f', help='wordlist path', dest='wordlist', default='./db/params.txt')
+parser.add_argument('-f', help='wordlist path', dest='wordlist', default=f'{os.path.dirname(os.path.abspath(__file__))}/db/params.txt')
 parser.add_argument('--urls', help='file containing target urls', dest='url_file')
 parser.add_argument('--get', help='use get method', dest='GET', action='store_true')
 parser.add_argument('--post', help='use post method', dest='POST', action='store_true')
