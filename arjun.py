@@ -175,6 +175,7 @@ def narrower(oldParamList, url, include, headers, GET, delay, originalResponse, 
     return newParamList
 
 def initialize(url, include, headers, GET, delay, paramList, threadCount):
+    _url = url
     url = stabilize(url)
     if not url:
         return {}
@@ -234,6 +235,7 @@ def initialize(url, include, headers, GET, delay, paramList, threadCount):
         print('%s Scan Completed    ' % info)
 
         for each in foundParams:
+            print_orig(f"{_url}?{each}={randomString(2)}")
             print('%s Valid parameter found: %s%s%s' % (good, green, each, end))
         if not foundParams:
             print('%s Unable to verify existence of parameters detected by heuristic.' % bad)
@@ -269,7 +271,3 @@ if args.output_file and finalResult:
     print('%s Saving output to JSON file in %s' % (info, args.output_file))
     with open(str(args.output_file), 'w+', encoding="utf8") as json_output:
         json.dump(finalResult, json_output, sort_keys=True, indent=4)
-
-for url, params in finalResult.items():
-    for param in params:
-        print_orig(f"{url}?{param}={randomString(2)}", end='\n')
