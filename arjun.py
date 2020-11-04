@@ -110,7 +110,12 @@ if url_file:
 if not url and not url_file:
     # print('%s No URL specified.' % bad)
     # quit()
-    url = input()
+    try:
+        while True:
+            ipt = input()
+            urls.append(ipt)
+    except:
+        pass
 
 if '?' in url:
     url = url[:url.find('?')]
