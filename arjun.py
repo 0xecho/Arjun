@@ -113,12 +113,11 @@ if not url and not url_file:
     try:
         while True:
             ipt = input()
+            if '?' in ipt:
+                ipt = ipt[:ipt.find('?')]
             urls.append(ipt)
     except:
         pass
-
-if '?' in url:
-    url = url[:url.find('?')]
 
 def heuristic(response, paramList):
     done = []
