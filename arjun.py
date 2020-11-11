@@ -107,13 +107,22 @@ if url_file:
         print('%s The specified file for URLs doesn\'t exist' % bad)
         quit()
 
-if not url and not url_file:
-    # print('%s No URL specified.' % bad)
-    # quit()
-    url = input()
+def urls():
+    while True:
+        try:
+            ipt = input()
+            yield ipt
+        except:
+            break
 
-if '?' in url:
-    url = url[:url.find('?')]
+
+# if not url and not url_file:
+#     # print('%s No URL specified.' % bad)
+#     # quit()
+#     url = input()
+
+#     if '?' in url:
+#         url = url[:url.find('?')]
 
 def heuristic(response, paramList):
     done = []
@@ -182,8 +191,10 @@ def initialize(url, include, headers, GET, delay, paramList, threadCount):
         return {}
     else:
         print('%s Analysing the content of the webpage' % run)
-        firstResponse = requester(url, include, headers, GET, delay)
-
+        try:
+            firstResponse = requester(url, include, headers, GET, delay)
+        except:
+            return {}
         print('%s Analysing behaviour for a non-existent parameter' % run)
 
         originalFuzz = randomString(6)
@@ -253,7 +264,7 @@ try:
             print('%s Target has rate limiting in place, please use --stable switch.' % bad)
             quit()
     elif urls:
-        for url in urls:
+        for url in urls():
             finalResult[url] = []
             print('%s Scanning: %s' % (run, url))
             try:
