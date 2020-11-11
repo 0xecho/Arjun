@@ -115,15 +115,6 @@ def urls():
         except:
             break
 
-
-# if not url and not url_file:
-#     # print('%s No URL specified.' % bad)
-#     # quit()
-#     url = input()
-
-#     if '?' in url:
-#         url = url[:url.find('?')]
-
 def heuristic(response, paramList):
     done = []
     forms = re.findall(r'(?i)(?s)<form.*?</form.*?>', response)
