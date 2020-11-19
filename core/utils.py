@@ -58,7 +58,7 @@ def stabilize(url):
         if 'ssl' in str(e).lower():
             pass
         else:
-            print ('%s Unable to connect to the target.' % bad)
+            # print ('%s Unable to connect to the target.' % bad)
             return False
     return url
 
@@ -80,7 +80,7 @@ def lineComparer(response1, response2):
 
 def randomString(n):
     "generates a random string of length n"
-    return ''.join(str(random.choice(range(10))) for i in range(n))
+    return ''.join(str(random.choice(range(10))) for i in range(n)) + "<>\"'%;)(&+"
 
 def e(string):
     "utf encodes a string"
